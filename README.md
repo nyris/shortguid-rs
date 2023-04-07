@@ -14,3 +14,13 @@ fn it_works() {
     assert_eq!(short_guid_3, uuid);
 }
 ```
+
+## Fuzzing
+
+This uses `cargo-fuzz`. See `fuzz/fuzzers` for the available fuzzing scripts. To run, use an invocation like these:
+
+```
+cargo +nightly fuzz run roundtrip
+cargo +nightly fuzz run decode_random
+cargo +nightly fuzz run encode_random
+```
