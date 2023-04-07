@@ -1,0 +1,40 @@
+[package]
+name = "shortguid-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4.6"
+
+[dependencies.shortguid]
+path = ".."
+features = ["arbitrary"]
+
+# Prevent this from interfering with workspaces
+[workspace]
+members = ["."]
+
+[profile.release]
+debug = 1
+
+[[bin]]
+name = "decode_random"
+path = "fuzz_targets/decode_random.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "encode_random"
+path = "fuzz_targets/encode_random.rs"
+test = false
+doc = false
+
+[[bin]]
+name = "roundtrip"
+path = "fuzz_targets/roundtrip.rs"
+test = false
+doc = false

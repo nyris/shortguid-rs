@@ -31,6 +31,7 @@ use uuid::Uuid;
 /// assert_eq!(short_guid_a, short_guid_b);
 /// ```
 #[derive(Default, Clone, Eq, PartialEq, Hash)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct ShortGuid(Uuid);
 
@@ -47,6 +48,7 @@ impl ShortGuid {
         Ok(Self(uuid))
     }
 
+    #[inline]
     pub fn from_bytes(bytes: &[u8; 16]) -> Self {
         Self(Uuid::from_bytes_ref(bytes).clone())
     }
@@ -77,18 +79,21 @@ impl ShortGuid {
     ///     &bytes1 as *const [u8; 16] as *const u8,
     /// ));
     /// ```
-    pub fn from_bytes_ref(bytes: &[u8; 16]) -> &Self {
+    #[inline]
+    pub const fn from_bytes_ref(bytes: &[u8; 16]) -> &Self {
         // SAFETY: `Bytes`, `Uuid` and `ShortGuid have the same ABI
         unsafe { &*(bytes as *const [u8; 16] as *const Uuid as *const ShortGuid) }
     }
 
     /// Tests if this [`ShortGuid`] is all zeros.
-    pub fn is_empty(&self) -> bool {
+    #[inline]
+    pub const fn is_empty(&self) -> bool {
         self.0.is_nil()
     }
 
     /// Returns the underlying [`Uuid`] instance.
-    pub fn as_uuid(&self) -> &Uuid {
+    #[inline]
+    pub const fn as_uuid(&self) -> &Uuid {
         &self.0
     }
 
@@ -118,6 +123,7 @@ impl ShortGuid {
     ///     &bytes1 as *const [u8; 16] as *const u8,
     /// ));
     /// ```
+    #[inline]
     pub fn as_bytes(&self) -> &[u8; 16] {
         self.0.as_bytes()
     }
@@ -146,6 +152,7 @@ impl ShortGuid {
     /// # Ok(())
     /// # }
     /// ```
+    #[inline]
     pub fn to_bytes_le(&self) -> [u8; 16] {
         self.0.to_bytes_le()
     }
