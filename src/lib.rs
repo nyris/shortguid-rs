@@ -1,4 +1,12 @@
 //! Provides short, URL-safe UUID representations.
+//!
+//! ```
+//! # use shortguid::ShortGuid;
+//! let short_guid_a = ShortGuid::try_parse("c9a646d3-9c61-4cb7-bfcd-ee2522c8f633").unwrap();
+//! let short_guid_b = ShortGuid::try_parse("yaZG05xhTLe_ze4lIsj2Mw").unwrap();
+//! assert_eq!(short_guid_a, "yaZG05xhTLe_ze4lIsj2Mw");
+//! assert_eq!(short_guid_a, short_guid_b);
+//! ```
 
 use base64::{DecodeError, Engine};
 use std::borrow::Borrow;
@@ -323,9 +331,14 @@ impl AsRef<[u8]> for ShortGuid {
     }
 }
 
+/// A parsing error.
 #[derive(Eq, PartialEq)]
 pub enum ParseError {
+    /// The provided input had an invalid length.
+    /// The contained value is the actual size.
     InvalidLength(usize),
+    /// The provided input had an invalid format.
+    /// The contained value is the underlying decoding error.
     InvalidFormat(DecodeError),
 }
 

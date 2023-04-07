@@ -89,7 +89,7 @@ dependencies = [
 
 [[package]]
 name = "shortguid"
-version = "0.2.0-unstable"
+version = "0.2.0"
 dependencies = [
  "arbitrary",
  "base64",
