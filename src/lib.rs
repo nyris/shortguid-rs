@@ -153,7 +153,7 @@ impl ShortGuid {
     /// # }
     /// ```
     #[inline]
-    pub fn to_bytes_le(&self) -> [u8; 16] {
+    pub const fn to_bytes_le(&self) -> [u8; 16] {
         self.0.to_bytes_le()
     }
 
@@ -281,9 +281,21 @@ impl PartialEq<&str> for ShortGuid {
     }
 }
 
+impl PartialEq<Vec<u8>> for ShortGuid {
+    fn eq(&self, other: &Vec<u8>) -> bool {
+        other.len() == 16 && self.as_bytes().eq(other.as_slice())
+    }
+}
+
 impl PartialEq<&[u8]> for ShortGuid {
     fn eq(&self, other: &&[u8]) -> bool {
         other.len() == 16 && self.as_bytes().eq(other)
+    }
+}
+
+impl PartialEq<&[u8; 16]> for ShortGuid {
+    fn eq(&self, other: &&[u8; 16]) -> bool {
+        self.as_bytes().eq(*other)
     }
 }
 

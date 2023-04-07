@@ -5,9 +5,13 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
+### Added
+
+- Added `PartialEq<T>` for `Vec<u8>` and `&[u8; 16]`. 
+
 ### Changed
 
-- `from_bytes_ref`, `as_uuid` and `is_empty` are now `const`.
+- `to_bytes_le`, `from_bytes_ref`, `as_uuid` and `is_empty` are now `const`.
 
 ### Internal
 
