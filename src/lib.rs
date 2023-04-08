@@ -2,11 +2,18 @@
 //!
 //! ```
 //! # use shortguid::ShortGuid;
-//! let short_guid_a = ShortGuid::try_parse("c9a646d3-9c61-4cb7-bfcd-ee2522c8f633").unwrap();
-//! let short_guid_b = ShortGuid::try_parse("yaZG05xhTLe_ze4lIsj2Mw").unwrap();
-//! assert_eq!(short_guid_a, "yaZG05xhTLe_ze4lIsj2Mw");
-//! assert_eq!(short_guid_a, short_guid_b);
+//! let from_uuid = ShortGuid::try_parse("c9a646d3-9c61-4cb7-bfcd-ee2522c8f633").unwrap();
+//! let from_short = ShortGuid::try_parse("yaZG05xhTLe_ze4lIsj2Mw").unwrap();
+//! assert_eq!(from_uuid, "yaZG05xhTLe_ze4lIsj2Mw");
+//! assert_eq!(from_uuid, from_short);
+//!
+//! let random = ShortGuid::new_random();
+//! assert_ne!(from_uuid, random);
 //! ```
+
+// only enables the `doc_cfg` feature when
+// the `docsrs` configuration attribute is defined
+#![cfg_attr(docsrs, feature(doc_cfg))]
 
 use base64::{DecodeError, Engine};
 use std::borrow::Borrow;
@@ -45,6 +52,20 @@ pub struct ShortGuid(Uuid);
 
 /// A short UUID format.
 impl ShortGuid {
+    /// Generates a new [`ShortGuid`] based on a random UUID v4.
+    #[cfg_attr(docsrs, doc(cfg(feature = "random")))]
+    #[cfg(feature = "random")]
+    #[inline(always)]
+    pub fn new_random() -> Self {
+        Self::new_from_uuid(Uuid::new_v4())
+    }
+
+    /// Creates a new [`ShortGuid`] based on the provided [`Uuid`].
+    #[inline(always)]
+    pub const fn new_from_uuid(uuid: Uuid) -> Self {
+        Self(uuid)
+    }
+
     /// Tries to parse the value as a [`ShortGuid`] or [`Uuid`] string, and outputs an actual
     /// [`ShortGuid`] instance.
     pub fn try_parse<S: AsRef<str>>(value: S) -> Result<Self, ParseError> {
@@ -56,6 +77,12 @@ impl ShortGuid {
         Ok(Self(uuid))
     }
 
+    /// Constructs a [`ShortGuid`] instance based on a byte slice.
+    ///
+    /// ## Notes
+    /// This will clone the underlying data. If you wish to return a
+    /// transparent reference around the provided slice, use [`ShortGuid::from_bytes_ref`]
+    /// instead.
     #[inline]
     pub fn from_bytes(bytes: &[u8; 16]) -> Self {
         Self(Uuid::from_bytes_ref(bytes).clone())
@@ -392,6 +419,14 @@ mod tests {
     #[test]
     fn is_empty_works() {
         assert!(ShortGuid::default().is_empty());
+    }
+
+    #[test]
+    fn new_random_works() {
+        let a = ShortGuid::new_random();
+        let b = ShortGuid::new_random();
+        assert_ne!(a, b);
+        assert_ne!(a, ShortGuid::default());
     }
 
     #[test]

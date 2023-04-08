@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added `new_random` when using the `random` crate feature.
+- Added `new_from_uuid` to create a `ShortGuid` from an existing UUID.
+
 ## 0.2.0 - 2023-04-08
 
 ### Added
