@@ -302,8 +302,8 @@ impl PartialEq<String> for ShortGuid {
     }
 }
 
-impl PartialEq<&str> for ShortGuid {
-    fn eq(&self, other: &&str) -> bool {
+impl PartialEq<str> for ShortGuid {
+    fn eq(&self, other: &str) -> bool {
         if let Ok(uuid) = ShortGuid::try_decode(other) {
             return self.0.eq(&uuid);
         }
@@ -313,6 +313,12 @@ impl PartialEq<&str> for ShortGuid {
         }
 
         false
+    }
+}
+
+impl PartialEq<&str> for ShortGuid {
+    fn eq(&self, other: &&str) -> bool {
+        self.eq(*other)
     }
 }
 
@@ -508,19 +514,19 @@ mod tests {
     fn encode_works() {
         assert_eq!(
             ShortGuid::encode(Uuid::from_str("c9a646d3-9c61-4cb7-bfcd-ee2522c8f633").unwrap()),
-            "yaZG05xhTLe_ze4lIsj2Mw".to_string()
+            "yaZG05xhTLe_ze4lIsj2Mw"
         );
         assert_eq!(
             ShortGuid::encode(Uuid::from_str("10b8a76b-ad9d-d111-80b4-00c04fd430c8").unwrap()),
-            "ELina62d0RGAtADAT9QwyA".to_string()
+            "ELina62d0RGAtADAT9QwyA"
         );
         assert_eq!(
             ShortGuid::encode(Uuid::from_str("e193a05a-ca9c-3358-84dd-89985a29ec04").unwrap()),
-            "4ZOgWsqcM1iE3YmYWinsBA".to_string()
+            "4ZOgWsqcM1iE3YmYWinsBA"
         );
         assert_eq!(
             ShortGuid::encode(Uuid::from_str("00000000-0000-0000-0000-000000000000").unwrap()),
-            "AAAAAAAAAAAAAAAAAAAAAA".to_string()
+            "AAAAAAAAAAAAAAAAAAAAAA"
         );
     }
 

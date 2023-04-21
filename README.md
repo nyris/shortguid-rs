@@ -35,4 +35,5 @@ This uses `cargo-fuzz`. See `fuzz/fuzzers` for the available fuzzing scripts. To
 cargo +nightly fuzz run roundtrip
 cargo +nightly fuzz run decode_random
 cargo +nightly fuzz run encode_random
+cargo +nightly fuzz run equals
 ```
