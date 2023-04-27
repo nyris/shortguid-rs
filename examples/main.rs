@@ -21,18 +21,35 @@ fn parse_arguments() -> ArgMatches {
         .get_matches()
 }
 
-fn main() {
+fn showcase(shortguid: ShortGuid) {
+    println!("Short UUID:            {}", shortguid);
+    println!("UUID:                  {}", shortguid.as_uuid());
+
+    let uuid_as_bytes = shortguid.as_bytes();
+    let hex_uuid_string = hex::encode(uuid_as_bytes);
+    println!("UUID (bytes):          {}", hex_uuid_string);
+
+    let little_endian = shortguid.to_bytes_le();
+    let hex_little_endian_string = hex::encode(little_endian);
+    println!("UUID (little endian):  {}", hex_little_endian_string);
+}
+
+fn main() -> Result<(), shortguid::ParseError> {
     let arg_matches = parse_arguments();
 
     match arg_matches.subcommand() {
         Some(("convert", sub_matches)) => match sub_matches.get_one::<String>("input_id") {
             Some(input_id) => {
-                todo!()
+                let shortguid = ShortGuid::try_parse(input_id)?;
+                showcase(shortguid);
+                Ok(())
             }
             None => unreachable!("The input_id arg is required"),
         },
         Some(("random", _)) => {
-            todo!()
+            let shortguid = ShortGuid::new_random();
+            showcase(shortguid);
+            Ok(())
         }
 
         _ => unreachable!("Exhausted list of subcommands and subcommand_required prevents `None`"),
