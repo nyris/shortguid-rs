@@ -22,7 +22,7 @@ fn parse_arguments() -> ArgMatches {
         .get_matches()
 }
 
-fn showcase(shortguid: ShortGuid) {
+fn print_all_id_variants(shortguid: ShortGuid) {
     let engine = &base64::engine::general_purpose::STANDARD;
     let mut buffer = String::with_capacity(22);
     let uuid_as_bytes = shortguid.as_bytes();
@@ -46,14 +46,14 @@ fn main() -> Result<(), shortguid::ParseError> {
         Some(("convert", sub_matches)) => match sub_matches.get_one::<String>("input_id") {
             Some(input_id) => {
                 let shortguid = ShortGuid::try_parse(input_id)?;
-                showcase(shortguid);
+                print_all_id_variants(shortguid);
                 Ok(())
             }
             None => unreachable!("The input_id arg is required"),
         },
         Some(("random", _)) => {
             let shortguid = ShortGuid::new_random();
-            showcase(shortguid);
+            print_all_id_variants(shortguid);
             Ok(())
         }
 
