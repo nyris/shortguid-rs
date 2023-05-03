@@ -1,3 +1,4 @@
+use base64::Engine;
 use clap::{Arg, ArgMatches, Command};
 use shortguid::ShortGuid;
 
@@ -22,16 +23,20 @@ fn parse_arguments() -> ArgMatches {
 }
 
 fn showcase(shortguid: ShortGuid) {
-    println!("Short UUID:            {}", shortguid);
-    println!("UUID:                  {}", shortguid.as_uuid());
-
+    let engine = &base64::engine::general_purpose::STANDARD;
+    let mut buffer = String::with_capacity(22);
     let uuid_as_bytes = shortguid.as_bytes();
     let hex_uuid_string = hex::encode(uuid_as_bytes);
-    println!("UUID (bytes):          {}", hex_uuid_string);
+    let little_endian_short = shortguid.to_bytes_le();
+    let le_short_uuid = ShortGuid::from_bytes(&little_endian_short);
+    engine.encode_string(uuid_as_bytes, &mut buffer);
 
-    let little_endian = shortguid.to_bytes_le();
-    let hex_little_endian_string = hex::encode(little_endian);
-    println!("UUID (little endian):  {}", hex_little_endian_string);
+    println!("Short UUID:                  {}", shortguid);
+    println!("Base 64:                     {}", buffer);
+    println!("UUID:                        {}", shortguid.as_uuid());
+    println!("                             {}", hex_uuid_string);
+    println!("Short UUID (little endian):  {}", le_short_uuid);
+    println!("UUID (little endian):        {}", le_short_uuid.as_uuid());
 }
 
 fn main() -> Result<(), shortguid::ParseError> {
