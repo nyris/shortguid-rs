@@ -1,13 +1,26 @@
 use base64::Engine;
-use clap::{Arg, ArgMatches, Command};
+use clap::{Arg, ArgAction, ArgMatches, Command};
 use shortguid::ShortGuid;
 
 fn parse_arguments() -> ArgMatches {
     let input_id_arg = Arg::new("input_id").help("User input ID").required(true);
 
+    let short_id_arg = Arg::new("short")
+        .short('s')
+        .long("short")
+        .action(ArgAction::SetTrue);
+
+    let long_id_arg = Arg::new("long")
+        .short('l')
+        .long("long")
+        .action(ArgAction::SetTrue)
+        .conflicts_with("short");
+
     let convert_command = Command::new("convert")
         .about("Convert the provided id to it's short or default UUID representation")
-        .arg(&input_id_arg);
+        .arg(&input_id_arg)
+        .arg(short_id_arg)
+        .arg(long_id_arg);
 
     let random_command = Command::new("random")
         .about("Create a random UUID and print all of it's available representations");
@@ -46,7 +59,13 @@ fn main() -> Result<(), shortguid::ParseError> {
         Some(("convert", sub_matches)) => match sub_matches.get_one::<String>("input_id") {
             Some(input_id) => {
                 let shortguid = ShortGuid::try_parse(input_id)?;
-                print_all_id_variants(shortguid);
+
+                match (sub_matches.get_flag("short"), sub_matches.get_flag("long")) {
+                    (true, false) => println!("Short UUID: {}", shortguid),
+                    (false, true) => println!("UUID: {}", shortguid.as_uuid()),
+                    _ => print_all_id_variants(shortguid),
+                };
+
                 Ok(())
             }
             None => unreachable!("The input_id arg is required"),
