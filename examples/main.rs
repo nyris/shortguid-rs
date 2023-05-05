@@ -61,8 +61,8 @@ fn main() -> Result<(), shortguid::ParseError> {
                 let shortguid = ShortGuid::try_parse(input_id)?;
 
                 match (sub_matches.get_flag("short"), sub_matches.get_flag("long")) {
-                    (true, false) => println!("Short UUID: {}", shortguid),
-                    (false, true) => println!("UUID: {}", shortguid.as_uuid()),
+                    (true, false) => println!("{}", shortguid),
+                    (false, true) => println!("{}", shortguid.as_uuid()),
                     _ => print_all_id_variants(shortguid),
                 };
 
