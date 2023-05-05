@@ -19,6 +19,10 @@ default = ["random"]
 arbitrary = ["uuid/arbitrary", "arbitrary/derive"]
 random = ["uuid/v4"]
 
+[dev-dependencies]
+hex = "0.4.3"
+clap = "4.2.4"
+
 [package.metadata.docs.rs]
 all-features = true
 rustdoc-args = ["--cfg", "docsrs"]
