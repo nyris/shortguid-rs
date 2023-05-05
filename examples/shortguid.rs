@@ -22,7 +22,7 @@ fn parse_arguments() -> ArgMatches {
         .arg(short_id_arg)
         .arg(long_id_arg);
 
-    let random_command = Command::new("random")
+    let random_command = Command::new("new")
         .about("Create a random UUID and print all of it's available representations");
 
     Command::new("ShortGuid CLI")
