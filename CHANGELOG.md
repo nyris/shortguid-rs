@@ -8,6 +8,7 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Added more `PartialEq` implementations for `String` and `&&str` comparisons.
+- Added `Copy`, `Ord` and `PartialOrd` implementations for `ShortGuid`.
 
 ## 0.3.0 - 2023-04-08
 

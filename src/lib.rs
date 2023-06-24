@@ -45,7 +45,7 @@ use uuid::Uuid;
 /// assert_eq!(short_guid_a, "yaZG05xhTLe_ze4lIsj2Mw");
 /// assert_eq!(short_guid_a, short_guid_b);
 /// ```
-#[derive(Default, Clone, Eq, PartialEq, Hash)]
+#[derive(Default, Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 #[repr(transparent)]
 pub struct ShortGuid(Uuid);
