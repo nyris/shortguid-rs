@@ -15,10 +15,14 @@
 // the `docsrs` configuration attribute is defined
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
+#[cfg(feature = "serde")]
+mod serde;
+
 use base64::{DecodeError, Engine};
 use std::borrow::Borrow;
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
+use std::str::FromStr;
 use uuid::Uuid;
 
 /// A short, URL-safe UUID representation.
@@ -77,6 +81,13 @@ impl ShortGuid {
         Ok(Self(uuid))
     }
 
+    /// Creates a [`ShortGuid`] using the supplied bytes.
+    #[inline]
+    pub fn from_slice<B: AsRef<[u8]>>(bytes: B) -> Result<Self, ParseError> {
+        let uuid = Uuid::from_slice(bytes.as_ref()).map_err(|e| ParseError::InvalidSlice(e))?;
+        Ok(Self(uuid))
+    }
+
     /// Constructs a [`ShortGuid`] instance based on a byte slice.
     ///
     /// ## Notes
@@ -84,8 +95,8 @@ impl ShortGuid {
     /// transparent reference around the provided slice, use [`ShortGuid::from_bytes_ref`]
     /// instead.
     #[inline]
-    pub fn from_bytes(bytes: &[u8; 16]) -> Self {
-        Self(Uuid::from_bytes_ref(bytes).clone())
+    pub fn from_bytes<B: Borrow<[u8; 16]>>(bytes: B) -> Self {
+        Self(Uuid::from_bytes_ref(bytes.borrow()).clone())
     }
 
     /// Returns a slice of 16 octets containing the value.
@@ -373,6 +384,8 @@ pub enum ParseError {
     /// The provided input had an invalid format.
     /// The contained value is the underlying decoding error.
     InvalidFormat(DecodeError),
+    /// The provided slice input was invalid.
+    InvalidSlice(uuid::Error),
 }
 
 impl From<DecodeError> for ParseError {
@@ -395,7 +408,16 @@ impl Display for ParseError {
                 "Invalid ID length; expected 22 characters, but got {len}"
             ),
             ParseError::InvalidFormat(err) => write!(f, "Invalid ID format: {err}"),
+            ParseError::InvalidSlice(err) => write!(f, "Invalid slice: {err}"),
         }
+    }
+}
+
+impl FromStr for ShortGuid {
+    type Err = ParseError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        ShortGuid::try_parse(s)
     }
 }
 

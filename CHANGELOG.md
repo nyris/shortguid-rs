@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added a `FromStr` implementation, allowing for `parse::<ShortGuid>("...")`.
+- Added `from_slice` to construct from a `&[u8]`.
+- Added support for Serde.
+
 ## 0.4.0 - 2023-06-24
 
 ### Added
