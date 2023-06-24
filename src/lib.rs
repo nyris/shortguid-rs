@@ -16,6 +16,7 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 #[cfg(feature = "serde")]
+#[cfg_attr(docsrs, doc(cfg(feature = "serde")))]
 mod serde;
 
 use base64::{DecodeError, Engine};
