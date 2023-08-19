@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added `ShortGuid::from_bytes_le` as a counterpart to `to_bytes_le`.
+
 ## 0.5.0 - 2023-06-24
 
 ### Added

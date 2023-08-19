@@ -100,6 +100,35 @@ impl ShortGuid {
         Self(Uuid::from_bytes_ref(bytes.borrow()).clone())
     }
 
+    /// Constructs a [`ShortGuid`] instance based on a byte slice of bytes ordered in little endian.
+    ///
+    /// ## Notes
+    /// This will clone the underlying data. If you wish to return a
+    /// transparent reference around the provided slice, use [`ShortGuid::from_bytes_ref`]
+    /// instead.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// # use shortguid::ShortGuid;
+    /// let bytes1 = [
+    ///     0xa1, 0xa2, 0xa3, 0xa4,
+    ///     0xb1, 0xb2,
+    ///     0xc1, 0xc2,
+    ///     0xd1, 0xd2, 0xd3, 0xd4, 0xd5, 0xd6, 0xd7, 0xd8,
+    /// ];
+    /// let uuid1 = ShortGuid::from_bytes_ref(&bytes1);
+    ///
+    /// let bytes2 = uuid1.to_bytes_le();
+    /// let uuid2 = ShortGuid::from_bytes_le(bytes2);
+    ///
+    /// assert_eq!(uuid1, &uuid2);
+    /// ```
+    #[inline]
+    pub fn from_bytes_le<B: Borrow<[u8; 16]>>(bytes: B) -> Self {
+        Self(Uuid::from_bytes_le(bytes.borrow().clone()))
+    }
+
     /// Returns a slice of 16 octets containing the value.
     ///
     /// This method borrows the underlying byte value of the UUID.
