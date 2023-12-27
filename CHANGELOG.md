@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Added support for the `uuid` crate's `bytemuck` feature.
+
 ## 0.6.0 - 2023-06-24
 
 ### Added

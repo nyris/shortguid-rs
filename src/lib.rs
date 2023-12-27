@@ -52,6 +52,14 @@ use uuid::Uuid;
 /// ```
 #[derive(Default, Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
+// #[cfg_attr(
+//      feature = "zerocopy",
+//      derive(zerocopy::AsBytes, zerocopy::FromBytes, zerocopy::Unaligned)
+// )]
+#[cfg_attr(
+    feature = "bytemuck",
+    derive(bytemuck::Zeroable, bytemuck::Pod, bytemuck::TransparentWrapper)
+)]
 #[repr(transparent)]
 pub struct ShortGuid(Uuid);
 
