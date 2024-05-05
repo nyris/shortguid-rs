@@ -8,6 +8,7 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - Added support for the `uuid` crate's `bytemuck` feature.
+- Added support for [Borsh](https://borsh.io/) serialization via the `uuid` crate's `borsh` feature.
 
 ## 0.6.0 - 2023-06-24
 
@@ -41,7 +42,7 @@ This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- Added `PartialEq<T>` for `Vec<u8>` and `&[u8; 16]`. 
+- Added `PartialEq<T>` for `Vec<u8>` and `&[u8; 16]`.
 
 ### Changed
 
