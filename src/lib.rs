@@ -10,6 +10,22 @@
 //! let random = ShortGuid::new_random();
 //! assert_ne!(from_uuid, random);
 //! ```
+//!
+//! # Create features
+//!
+//! Other crate features can also be useful beyond the version support:
+//!
+//! * `serde` - adds the ability to serialize and deserialize a UUID using
+//!   `serde`.
+//! * `borsh` - adds the ability to serialize and deserialize a UUID using
+//!   `borsh`.
+//! * `arbitrary` - adds an `Arbitrary` trait implementation to `Uuid` for
+//!   fuzzing.
+//! * `random` - adds the ability to generate a random [`ShortGuid`]s.
+//! * `fast-rng` - uses a faster algorithm for generating random [`ShortGuid`]s.
+//!   This feature requires more dependencies to compile, but is just as suitable for
+//!   [`ShortGuid`] as the default algorithm. Implies `random`.
+//! * `bytemuck` - adds a `Pod` trait implementation to `Uuid` for byte manipulation
 
 // only enables the `doc_cfg` feature when
 // the `docsrs` configuration attribute is defined
@@ -56,6 +72,10 @@ use uuid::Uuid;
 //      feature = "zerocopy",
 //      derive(zerocopy::AsBytes, zerocopy::FromBytes, zerocopy::Unaligned)
 // )]
+#[cfg_attr(
+    feature = "borsh",
+    derive(borsh_derive::BorshDeserialize, borsh_derive::BorshSerialize)
+)]
 #[cfg_attr(
     feature = "bytemuck",
     derive(bytemuck::Zeroable, bytemuck::Pod, bytemuck::TransparentWrapper)
@@ -608,5 +628,29 @@ mod tests {
             0xd7, 0xd8,
         ];
         assert_eq!(id, slice);
+    }
+}
+
+#[cfg(all(test, feature = "borsh"))]
+mod borsh_tests {
+    use super::*;
+    use std::string::ToString;
+
+    #[test]
+    fn test_serialize() {
+        let uuid_str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        let sg = ShortGuid::from_str(uuid_str).unwrap();
+        let sg_bytes = sg.as_bytes().to_vec();
+        let borsh_bytes = borsh::to_vec(&sg).unwrap();
+        assert_eq!(sg_bytes, borsh_bytes);
+    }
+
+    #[test]
+    fn test_deserialize() {
+        let uuid_str = "f9168c5e-ceb2-4faa-b6bf-329bf39fa1e4";
+        let sg = ShortGuid::from_str(uuid_str).unwrap();
+        let sg_bytes = sg.as_bytes().to_vec();
+        let deserialized = borsh::from_slice::<Uuid>(&sg_bytes).unwrap().to_string();
+        assert_eq!(uuid_str, deserialized);
     }
 }
