@@ -1,5 +1,5 @@
 //! # shortguid
-//! 
+//!
 //! Provides short, URL-safe UUID representations.
 //!
 //! ```
