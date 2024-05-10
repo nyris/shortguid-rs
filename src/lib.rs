@@ -41,6 +41,9 @@ use std::fmt::{Debug, Display, Formatter};
 use std::str::FromStr;
 use uuid::Uuid;
 
+#[cfg(all(uuid_unstable, feature = "zerocopy"))]
+use zerocopy::{AsBytes, FromBytes, Unaligned};
+
 /// A short, URL-safe UUID representation.
 ///
 /// ## Example
@@ -67,10 +70,10 @@ use uuid::Uuid;
 /// ```
 #[derive(Default, Copy, Clone, Eq, PartialEq, Hash, Ord, PartialOrd)]
 #[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
-// #[cfg_attr(
-//      feature = "zerocopy",
-//      derive(zerocopy::AsBytes, zerocopy::FromBytes, zerocopy::Unaligned)
-// )]
+#[cfg_attr(
+    all(uuid_unstable, feature = "zerocopy"),
+    derive(AsBytes, FromBytes, Unaligned)
+)]
 #[cfg_attr(
     feature = "borsh",
     derive(borsh_derive::BorshDeserialize, borsh_derive::BorshSerialize)
