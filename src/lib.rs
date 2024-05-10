@@ -1,3 +1,5 @@
+//! # shortguid
+//! 
 //! Provides short, URL-safe UUID representations.
 //!
 //! ```
@@ -11,21 +13,18 @@
 //! assert_ne!(from_uuid, random);
 //! ```
 //!
-//! # Create features
+//! ## Create features
 //!
 //! Other crate features can also be useful beyond the version support:
 //!
-//! * `serde` - adds the ability to serialize and deserialize a UUID using
-//!   `serde`.
-//! * `borsh` - adds the ability to serialize and deserialize a UUID using
-//!   `borsh`.
-//! * `arbitrary` - adds an `Arbitrary` trait implementation to `Uuid` for
-//!   fuzzing.
+//! * `serde` - adds the ability to serialize and deserialize a UUID using `serde`.
+//! * `borsh` - adds the ability to serialize and deserialize a UUID using `borsh`.
+//! * `arbitrary` - adds an `Arbitrary` trait implementation to `Uuid` for fuzzing.
 //! * `random` - adds the ability to generate a random [`ShortGuid`]s.
 //! * `fast-rng` - uses a faster algorithm for generating random [`ShortGuid`]s.
 //!   This feature requires more dependencies to compile, but is just as suitable for
-//!   [`ShortGuid`] as the default algorithm. Implies `random`.
-//! * `bytemuck` - adds a `Pod` trait implementation to `Uuid` for byte manipulation
+//!   [`ShortGuid`] as the default algorithm. Implies `random`, enabled by default.
+//! * `bytemuck` - adds a `Pod` trait implementation to `Uuid` for byte manipulation.
 
 // only enables the `doc_cfg` feature when
 // the `docsrs` configuration attribute is defined
