@@ -13,12 +13,12 @@ rust-version = "1.67.1"
 
 [features]
 default = ["fast-rng"]
-arbitrary = ["uuid/arbitrary", "arbitrary/derive"]  # Add support for arbitrary types
-random = ["uuid/v4"]                                # Create random ShortGuid IDs
-fast-rng = ["random", "uuid/fast-rng"]             # Use a faster (but still sufficiently random) RNG
-serde = ["dep:serde", "uuid/serde"]                 # Serialization and deserialization support
-# zerocopy = ["dep:zerocopy", "uuid/zerocopy"]        # Zerocopy support
-bytemuck = ["dep:bytemuck", "uuid/bytemuck"]        # Bytemuck support
+arbitrary = ["uuid/arbitrary", "arbitrary/derive"]       # Add support for arbitrary types
+random = ["uuid/v4"]                                     # Create random ShortGuid IDs
+fast-rng = ["random", "uuid/fast-rng"]                   # Use a faster (but still sufficiently random) RNG
+serde = ["dep:serde", "uuid/serde"]                      # Serialization and deserialization support
+# zerocopy = ["dep:zerocopy", "uuid/zerocopy"]           # Zerocopy support
+bytemuck = ["dep:bytemuck", "uuid/bytemuck"]             # Bytemuck support
 borsh = ["dep:borsh", "dep:borsh-derive", "uuid/borsh"]  # Borsh support
 
 [[example]]

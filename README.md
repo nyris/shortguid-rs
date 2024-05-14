@@ -1,10 +1,12 @@
 # ShortGuid
 
-Short URL-safe Base64 encoded UUIDs. 
+[![codecov](https://codecov.io/gh/nyris/shortguid-rs/graph/badge.svg?token=YOM7OCX28D)](https://codecov.io/gh/nyris/shortguid-rs)
+
+Short URL-safe Base64 encoded UUIDs.
 
 ---
 
-ShortGuids transparently represent UUID types but use only 22 characters 
+ShortGuids transparently represent UUID types but use only 22 characters
 in their string representation, as opposed to 36 characters for a dashed
 UUID or 32 without dashes.
 
