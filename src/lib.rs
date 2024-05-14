@@ -112,7 +112,7 @@ impl ShortGuid {
     /// Creates a [`ShortGuid`] using the supplied bytes.
     #[inline]
     pub fn from_slice<B: AsRef<[u8]>>(bytes: B) -> Result<Self, ParseError> {
-        let uuid = Uuid::from_slice(bytes.as_ref()).map_err(|e| ParseError::InvalidSlice(e))?;
+        let uuid = Uuid::from_slice(bytes.as_ref()).map_err(ParseError::InvalidSlice)?;
         Ok(Self(uuid))
     }
 
@@ -124,7 +124,7 @@ impl ShortGuid {
     /// instead.
     #[inline]
     pub fn from_bytes<B: Borrow<[u8; 16]>>(bytes: B) -> Self {
-        Self(Uuid::from_bytes_ref(bytes.borrow()).clone())
+        Self(*Uuid::from_bytes_ref(bytes.borrow()))
     }
 
     /// Constructs a [`ShortGuid`] instance based on a byte slice of bytes ordered in little endian.
@@ -153,7 +153,7 @@ impl ShortGuid {
     /// ```
     #[inline]
     pub fn from_bytes_le<B: Borrow<[u8; 16]>>(bytes: B) -> Self {
-        Self(Uuid::from_bytes_le(bytes.borrow().clone()))
+        Self(Uuid::from_bytes_le(*bytes.borrow()))
     }
 
     /// Returns a slice of 16 octets containing the value.
@@ -310,7 +310,7 @@ impl Debug for ShortGuid {
         write!(
             f,
             "{short} ({long})",
-            short = Self::encode(&self.0),
+            short = Self::encode(self.0),
             long = self.0
         )
     }
@@ -318,7 +318,7 @@ impl Debug for ShortGuid {
 
 impl Display for ShortGuid {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{short}", short = Self::encode(&self.0))
+        write!(f, "{short}", short = Self::encode(self.0))
     }
 }
 
