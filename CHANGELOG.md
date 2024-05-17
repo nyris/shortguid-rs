@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 This project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [0.7.0] - 2024-05-17
+
+[0.7.0]: https://github.com/nyris/shortguid-rs/releases/tag/v0.7.0
 
 ### Added
 
 - Added support for the `uuid` crate's `bytemuck` feature.
 - Added support for [Borsh](https://borsh.io/) serialization via the `uuid` crate's `borsh` feature.
+
+### Changed
+
+- Use the `uuid` crate's fast RNG by default.
 
 ## 0.6.0 - 2023-06-24
 
